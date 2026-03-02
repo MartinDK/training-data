@@ -1,5 +1,6 @@
 # training-data
 
-ai training
+Ai training
 
-[Original CrankAddict Repo](https://github.com/CrankAddict/section-11)
+- [My github repo](https://github.com/MartinDK/training-data)
+- [Original CrankAddict repo](https://github.com/CrankAddict/section-11)

@@ -113,7 +113,7 @@ class IntervalsSync:
         - sportInfo with eFTP, W', P-max (accurate live estimates)
         - VO2max, sleep quality/hours, etc.
         """
-        today = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
         try:
             data = self._intervals_get(f"wellness/{today}")
             return data
@@ -195,7 +195,7 @@ class IntervalsSync:
         Tracks indoor and outdoor FTP separately.
         Only adds entry if FTP changed from most recent entry.
         """
-        today = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
         
         # Ensure structure exists
         if "indoor" not in history:
@@ -257,7 +257,7 @@ class IntervalsSync:
             return None, None
         
         # Find FTP from ~8 weeks ago (56 days, with ±7 day tolerance)
-        target_date = datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=56)
+        target_date = datetime.now() - timedelta(days=56)
         earliest_acceptable = target_date - timedelta(days=7)
         latest_acceptable = target_date + timedelta(days=7)
         
@@ -291,7 +291,7 @@ class IntervalsSync:
             sorted_dates = sorted(ftp_history.keys())
             if sorted_dates:
                 oldest_date = datetime.strptime(sorted_dates[0], "%Y-%m-%d")
-                days_of_history = (datetime.now(ZoneInfo("Australia/Melbourne")) - oldest_date).days
+                days_of_history = (datetime.now() - oldest_date).days
                 print(f"  Benchmark Index ({ftp_type}) unavailable: only {days_of_history} days of history (need ~56)")
         
         return None, None
@@ -300,10 +300,10 @@ class IntervalsSync:
         """Collect all training data for LLM analysis"""
         # Extended range for ACWR calculation (need 28 days minimum)
         days_for_acwr = 28
-        oldest_extended = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=days_for_acwr - 1)).strftime("%Y-%m-%d")
-        oldest_display = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=days_back - 1)).strftime("%Y-%m-%d")
-        newest = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%Y-%m-%d")
-        today = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%Y-%m-%d")
+        oldest_extended = (datetime.now() - timedelta(days=days_for_acwr - 1)).strftime("%Y-%m-%d")
+        oldest_display = (datetime.now() - timedelta(days=days_back - 1)).strftime("%Y-%m-%d")
+        newest = datetime.now().strftime("%Y-%m-%d")
+        today = datetime.now().strftime("%Y-%m-%d")
         
         print("Fetching athlete data...")
         athlete = self._intervals_get("")
@@ -343,7 +343,7 @@ class IntervalsSync:
         # Fetch yesterday's wellness for decay fallback
         print("Fetching fitness metrics...")
         try:
-            yesterday = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=1)).strftime("%Y-%m-%d")
+            yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
             yesterday_wellness = self._intervals_get("wellness", {"oldest": yesterday, "newest": yesterday})
             yesterday_data = yesterday_wellness[0] if yesterday_wellness else {}
             
@@ -369,14 +369,14 @@ class IntervalsSync:
         
         # Fetch planned workouts (EXTENDED: include past 7 days for Consistency Index, 90 days ahead for race calendar)
         print("Fetching planned workouts (past + future for Consistency Index + race calendar)...")
-        oldest_events = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=days_back - 1)).strftime("%Y-%m-%d")
-        newest_ahead = (datetime.now(ZoneInfo("Australia/Melbourne")) + timedelta(days=90)).strftime("%Y-%m-%d")
+        oldest_events = (datetime.now() - timedelta(days=days_back - 1)).strftime("%Y-%m-%d")
+        newest_ahead = (datetime.now() + timedelta(days=90)).strftime("%Y-%m-%d")
         events = self._intervals_get("events", {"oldest": oldest_events, "newest": newest_ahead})
         
         # Split events into past (for consistency), near future (for planned workouts display), and all future (for race calendar)
         past_events = [e for e in events if e.get("start_date_local", "")[:10] <= today]
         future_events = [e for e in events if e.get("start_date_local", "")[:10] >= today]
-        near_future_events = [e for e in future_events if e.get("start_date_local", "")[:10] <= (datetime.now(ZoneInfo("Australia/Melbourne")) + timedelta(days=42)).strftime("%Y-%m-%d")]
+        near_future_events = [e for e in future_events if e.get("start_date_local", "")[:10] <= (datetime.now() + timedelta(days=42)).strftime("%Y-%m-%d")]
         
         # Smart fitness metrics: same logic for CTL, ATL, TSB, and ramp rate
         # API values include planned workouts → inflated if not yet completed
@@ -497,7 +497,7 @@ class IntervalsSync:
             },
             "metadata": {
                 "athlete_id": "REDACTED" if anonymize else self.athlete_id,
-                "last_updated": datetime.now(ZoneInfo("Australia/Melbourne")).isoformat(),
+                "last_updated": datetime.now().isoformat(),
                 "data_range_days": days_back,
                 "extended_range_days": days_for_acwr,
                 "version": self.VERSION
@@ -936,7 +936,7 @@ class IntervalsSync:
             "vo2max": vo2max,
             
             # Validation metadata
-            "calculation_timestamp": datetime.now(ZoneInfo("Australia/Melbourne")).isoformat(),
+            "calculation_timestamp": datetime.now().isoformat(),
             "data_quality": {
                 "hrv_data_points": len(hrv_values_7d),
                 "rhr_data_points": len(rhr_values_7d),
@@ -1085,7 +1085,7 @@ class IntervalsSync:
         # Create array for last N days (including days with 0 TSS)
         result = []
         for i in range(days - 1, -1, -1):
-            date = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=i)).strftime("%Y-%m-%d")
+            date = (datetime.now() - timedelta(days=i)).strftime("%Y-%m-%d")
             result.append(daily_tss.get(date, 0))
         
         return result
@@ -1115,7 +1115,7 @@ class IntervalsSync:
         for sport_family, daily_dict in sport_daily_tss.items():
             daily_array = []
             for i in range(days - 1, -1, -1):
-                date = (datetime.now(ZoneInfo("Australia/Melbourne")) - timedelta(days=i)).strftime("%Y-%m-%d")
+                date = (datetime.now() - timedelta(days=i)).strftime("%Y-%m-%d")
                 daily_array.append(daily_dict.get(date, 0))
             result[sport_family] = daily_array
 
@@ -1655,7 +1655,7 @@ class IntervalsSync:
         Determine seasonal context based on current month.
         Assumes Northern Hemisphere cycling calendar.
         """
-        month = datetime.now(ZoneInfo("Australia/Melbourne")).month
+        month = datetime.now().month
         
         if month in [11, 12]:
             return "Off-season / Transition"
@@ -2021,7 +2021,7 @@ class IntervalsSync:
                 # Calculate age
                 try:
                     gen_date = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
-                    age_days = (datetime.now(ZoneInfo("Australia/Melbourne")) - gen_date.replace(tzinfo=None)).days
+                    age_days = (datetime.now() - gen_date.replace(tzinfo=None)).days
                 except:
                     age_days = None
                 
@@ -2071,7 +2071,7 @@ class IntervalsSync:
             return True
         
         # For REFRESH of existing history, apply the time gate
-        now = datetime.now(ZoneInfo("Australia/Melbourne"))
+        now = datetime.now()
         
         # Only on Sundays (6) or Mondays (0)
         if now.weekday() not in [0, 6]:
@@ -2087,7 +2087,7 @@ class IntervalsSync:
                 history_data = json.load(f)
             generated_at = history_data.get("generated_at", "")
             gen_date = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
-            age_days = (datetime.now(ZoneInfo("Australia/Melbourne")) - gen_date.replace(tzinfo=None)).days
+            age_days = (datetime.now() - gen_date.replace(tzinfo=None)).days
             
             if age_days > 28:
                 if self.debug:
@@ -2115,7 +2115,7 @@ class IntervalsSync:
         """
         print("\n📊 Generating history.json...")
         
-        now = datetime.now(ZoneInfo("Australia/Melbourne"))
+        now = datetime.now()
         
         # Determine how far back we can go (up to 3 years)
         earliest_3y = (now - timedelta(days=365 * 3)).strftime("%Y-%m-%d")
@@ -2234,7 +2234,7 @@ class IntervalsSync:
                           days: int) -> List[Dict]:
         """Build daily resolution rows for the 90-day tier."""
         rows = []
-        now = datetime.now(ZoneInfo("Australia/Melbourne"))
+        now = datetime.now()
         
         for i in range(days - 1, -1, -1):
             date = (now - timedelta(days=i))
@@ -2310,7 +2310,7 @@ class IntervalsSync:
                            days: int) -> List[Dict]:
         """Build weekly aggregate rows for the 180-day tier."""
         rows = []
-        now = datetime.now(ZoneInfo("Australia/Melbourne"))
+        now = datetime.now()
         
         # Calculate weeks
         start_date = now - timedelta(days=days)
@@ -2451,7 +2451,7 @@ class IntervalsSync:
                             days: int) -> List[Dict]:
         """Build monthly aggregate rows for 1/2/3-year tiers."""
         rows = []
-        now = datetime.now(ZoneInfo("Australia/Melbourne"))
+        now = datetime.now()
         start_date = now - timedelta(days=days)
         
         # Group by month
@@ -2626,7 +2626,7 @@ class IntervalsSync:
                     break
         
         if cycling_settings:
-            today = datetime.now(ZoneInfo("Australia/Melbourne")).strftime("%Y-%m-%d")
+            today = datetime.now().strftime("%Y-%m-%d")
             outdoor_ftp = cycling_settings.get("ftp")
             indoor_ftp = cycling_settings.get("indoor_ftp")
             
@@ -3406,7 +3406,7 @@ class IntervalsSync:
             raise ValueError("GitHub token and repo required for publishing")
         
         if not commit_message:
-            commit_message = f"Update training data - {datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d %H:%M:%S')}"
+            commit_message = f"Update training data - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         
         headers = {
             "Authorization": f"token {self.github_token}",
@@ -3538,7 +3538,7 @@ def main():
         if github_token and github_repo and not args.output:
             print("\n📤 Publishing history.json to GitHub...")
             sync.publish_to_github(history, filepath="history.json",
-                                   commit_message=f"Generate history.json - {datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d')}")
+                                   commit_message=f"Generate history.json - {datetime.now().strftime('%Y-%m-%d')}")
             print("   ✅ history.json pushed to GitHub")
         return
     

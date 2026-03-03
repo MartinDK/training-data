@@ -3407,7 +3407,8 @@ class IntervalsSync:
             raise ValueError("GitHub token and repo required for publishing")
         
         if not commit_message:
-            commit_message = f"Update training data - {datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d %H:%M:%S')}"
+            now_str = datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d %H:%M:%S')
+            commit_message = f"Update training data - {now_str}"
         
         headers = {
             "Authorization": f"token {self.github_token}",

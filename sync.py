@@ -3517,6 +3517,8 @@ def main():
     print(f"   GitHub Token: {'SET' if github_token else 'NOT SET'}")
     print(f"   Days: {args.days}")
     print(f"   Version: {IntervalsSync.VERSION}")
+  
+    today_str = datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d')
     
     if not athlete_id or not intervals_key:
         print("\n❌ Error: Missing credentials.")
@@ -3539,7 +3541,7 @@ def main():
         if github_token and github_repo and not args.output:
             print("\n📤 Publishing history.json to GitHub...")
             sync.publish_to_github(history, filepath="history.json",
-                                   commit_message=f"Generate history.json - {datetime.now(ZoneInfo("Australia/Melbourne")).strftime('%Y-%m-%d')}")
+                                   commit_message=f"Generate history.json - {today_str}")
             print("   ✅ history.json pushed to GitHub")
         return
     
@@ -3636,7 +3638,7 @@ def main():
                 print("\n📊 Auto-generating history.json...")
                 history = sync.generate_history()
                 sync.publish_to_github(history, filepath="history.json",
-                                       commit_message=f"Auto-generate history.json - {datetime.now().strftime('%Y-%m-%d')}")
+                                       commit_message=f"Auto-generate history.json - {today_str}")
                 print("   ✅ history.json auto-generated and pushed to GitHub")
             except Exception as e:
                 print(f"   ⚠️ History generation failed (non-critical): {e}")

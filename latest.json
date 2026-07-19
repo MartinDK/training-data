@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-07-18T13:46:48.558409+10:00",
+    "last_updated": "2026-07-19T14:15:06.219940+10:00",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -57,17 +57,17 @@
   },
   "current_status": {
     "fitness": {
-      "ctl": 29.76,
-      "atl": 21.47,
-      "tsb": 8.29,
-      "ramp_rate": -2.69,
+      "ctl": 29.06,
+      "atl": 18.62,
+      "tsb": 10.44,
+      "ramp_rate": -2.63,
       "fitness_source": "From Intervals.icu API (reflects completed workouts)"
     },
     "thresholds": {
-      "eftp": 229.6,
-      "w_prime": 19199,
+      "eftp": 229.3,
+      "w_prime": 19180,
       "w_prime_kj": 19.2,
-      "p_max": 709,
+      "p_max": 708,
       "vo2max": null,
       "sports": {
         "cycling": {
@@ -97,21 +97,21 @@
       }
     },
     "current_metrics": {
-      "weight_kg": 94.169,
-      "resting_hr": 56,
-      "hrv": 35.0,
-      "sleep_quality": 2,
-      "sleep_hours": 7.77
+      "weight_kg": 95.349,
+      "resting_hr": 58,
+      "hrv": 32.0,
+      "sleep_quality": 3,
+      "sleep_hours": 7.75
     }
   },
   "derived_metrics": {
-    "recovery_index": 1.02,
-    "hrv_baseline_7d": 33.6,
-    "rhr_baseline_7d": 54.6,
-    "hrv_baseline_28d": 33.8,
-    "rhr_baseline_28d": 53.6,
-    "latest_hrv": 35.0,
-    "latest_rhr": 56,
+    "recovery_index": 0.91,
+    "hrv_baseline_7d": 33.4,
+    "rhr_baseline_7d": 54.9,
+    "hrv_baseline_28d": 33.6,
+    "rhr_baseline_28d": 53.8,
+    "latest_hrv": 32.0,
+    "latest_rhr": 58,
     "acwr": 0.61,
     "acwr_interpretation": "undertraining",
     "monotony": 0.73,
@@ -123,7 +123,7 @@
     "multi_sport_detected": true,
     "strain": 77.0,
     "stress_tolerance": 1.1,
-    "load_recovery_ratio": 1.0,
+    "load_recovery_ratio": 1.2,
     "tss_7d_total": 106.0,
     "tss_28d_total": 691.0,
     "zone_distribution_7d": {
@@ -219,10 +219,9 @@
       "matched_days": 0,
       "note": "No planned workouts in period"
     },
-    "phase_detected": "Taper",
+    "phase_detected": "Recovery",
     "phase_triggers": [
-      "TSB 8.29 positive",
-      "CTL stable/declining"
+      "TSB 10.44 > +10"
     ],
     "seasonal_context": "Peak Race Season",
     "benchmark_indoor": {
@@ -239,13 +238,13 @@
       "benchmark_percentage": null,
       "seasonal_expected": null
     },
-    "eftp": 229.6,
-    "w_prime": 19199,
+    "eftp": 229.3,
+    "w_prime": 19180,
     "w_prime_kj": 19.2,
-    "p_max": 709,
+    "p_max": 708,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-07-18T13:46:48.557593+10:00",
+    "calculation_timestamp": "2026-07-19T14:15:06.219233+10:00",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -409,21 +408,6 @@
   ],
   "wellness_data": [
     {
-      "date": "2026-07-12",
-      "weight_kg": 93.599,
-      "resting_hr": 56,
-      "hrv_rmssd": 33.0,
-      "hrv_sdnn": null,
-      "sleep_hours": 5.15,
-      "sleep_quality": 4,
-      "sleep_score": 54.0,
-      "mental_energy": null,
-      "fatigue": null,
-      "soreness": null,
-      "avg_sleeping_hr": null,
-      "vo2max": null
-    },
-    {
       "date": "2026-07-13",
       "weight_kg": 93.33,
       "resting_hr": 55,
@@ -512,6 +496,21 @@
       "soreness": null,
       "avg_sleeping_hr": null,
       "vo2max": null
+    },
+    {
+      "date": "2026-07-19",
+      "weight_kg": 95.349,
+      "resting_hr": 58,
+      "hrv_rmssd": 32.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 7.75,
+      "sleep_quality": 3,
+      "sleep_score": 79.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
     }
   ],
   "planned_workouts": [],
@@ -519,8 +518,8 @@
     "total_training_hours": 3.42,
     "total_tss": 106,
     "activities_count": 3,
-    "avg_hrv": 33.6,
-    "avg_resting_hr": 54.6
+    "avg_hrv": 33.4,
+    "avg_resting_hr": 54.9
   },
   "race_calendar": {
     "next_race": null,

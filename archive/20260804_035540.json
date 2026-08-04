@@ -1,0 +1,638 @@
+{
+  "READ_THIS_FIRST": {
+    "instruction_for_ai": "DO NOT calculate totals from individual activities. Use the pre-calculated values in 'summary', 'weekly_summary', and 'derived_metrics' sections below. These are already computed accurately from the API data.",
+    "data_period": "Last 7 days (including today)",
+    "extended_data_note": "ACWR and baselines calculated from 28 days of data",
+    "capability_metrics_note": "The 'capability' block in derived_metrics contains durability trend (aggregate decoupling 7d/28d), efficiency factor trend (aggregate EF 7d/28d), and TID comparison (7d vs 28d distribution drift). These measure HOW the athlete expresses fitness, not just load. Use these for coaching context alongside traditional load metrics. Durability and EF trend direction matters more than absolute values.",
+    "quick_stats": {
+      "total_training_hours": 3.82,
+      "total_activities": 5,
+      "total_tss": 223
+    }
+  },
+  "metadata": {
+    "athlete_id": "REDACTED",
+    "last_updated": "2026-08-03T14:21:40.297914+10:00",
+    "data_range_days": 7,
+    "extended_range_days": 28,
+    "version": "3.6.0"
+  },
+  "alerts": [],
+  "history": {
+    "available": true,
+    "last_generated": "2026-02-28",
+    "age_days": null,
+    "total_months": 33,
+    "history_confidence": "high"
+  },
+  "summary": {
+    "period_description": "Last 7 days of training (including today)",
+    "note": "Duration calculated from API moving_time field.",
+    "total_duration_decimal_hours": 3.82,
+    "total_activities": 5,
+    "by_activity_type": {
+      "Run": {
+        "duration_decimal_hours": 1.88,
+        "count": 3,
+        "tss": 138,
+        "distance_km": 18.0
+      },
+      "VirtualRide": {
+        "duration_decimal_hours": 1.94,
+        "count": 2,
+        "tss": 85,
+        "distance_km": 0.0
+      }
+    }
+  },
+  "current_status": {
+    "fitness": {
+      "ctl": 30.9,
+      "atl": 31.99,
+      "tsb": -1.09,
+      "ramp_rate": 0.18,
+      "fitness_source": "From Intervals.icu API (reflects completed workouts)"
+    },
+    "thresholds": {
+      "eftp": 228.0,
+      "w_prime": 19065,
+      "w_prime_kj": 19.1,
+      "p_max": 704,
+      "vo2max": 44.0,
+      "sports": {
+        "cycling": {
+          "lthr": 152,
+          "max_hr": 176,
+          "threshold_pace": null,
+          "pace_units": null,
+          "ftp": 236,
+          "ftp_indoor": 236
+        },
+        "run": {
+          "lthr": 161,
+          "max_hr": 175,
+          "threshold_pace": 3.1746032,
+          "pace_units": "MINS_KM",
+          "ftp": 434,
+          "ftp_indoor": null
+        },
+        "swim": {
+          "lthr": 162,
+          "max_hr": 179,
+          "threshold_pace": 2.0,
+          "pace_units": "SECS_100M",
+          "ftp": null,
+          "ftp_indoor": null
+        }
+      }
+    },
+    "current_metrics": {
+      "weight_kg": 92.18,
+      "resting_hr": 54,
+      "hrv": 36.0,
+      "sleep_quality": 3,
+      "sleep_hours": 6.36
+    }
+  },
+  "derived_metrics": {
+    "recovery_index": 0.96,
+    "hrv_baseline_7d": 36.9,
+    "rhr_baseline_7d": 53.4,
+    "hrv_baseline_28d": 34.9,
+    "rhr_baseline_28d": 53.6,
+    "latest_hrv": 36.0,
+    "latest_rhr": 54,
+    "acwr": 1.01,
+    "acwr_interpretation": "optimal",
+    "monotony": 1.37,
+    "monotony_interpretation": "normal (primary sport 0.78, total 1.37 inflated by multi-sport)",
+    "primary_sport": "run",
+    "primary_sport_monotony": 0.78,
+    "primary_sport_tss_7d": 138.0,
+    "effective_monotony": 0.78,
+    "multi_sport_detected": true,
+    "strain": 306.0,
+    "stress_tolerance": 2.2,
+    "load_recovery_ratio": 2.3,
+    "tss_7d_total": 223.0,
+    "tss_28d_total": 887.0,
+    "zone_distribution_7d": {
+      "z1_hours": 1.48,
+      "z2_hours": 1.76,
+      "z3_hours": 0.16,
+      "z4_plus_hours": 0.44,
+      "total_hours": 3.83
+    },
+    "grey_zone_percentage": 4.1,
+    "grey_zone_note": "Gray Zone % (Z3/tempo) - minimize in polarized training",
+    "quality_intensity_percentage": 11.4,
+    "quality_intensity_note": "Quality Intensity % (Z4+/threshold+) - target ~20% in polarized training",
+    "polarisation_index": 0.84,
+    "polarisation_note": "Easy time (Z1+Z2) / Total - target ~80% in polarized training",
+    "hard_days_this_week": 2,
+    "hard_days_note": "Zone ladder: z3+ >= 30min, z4+ >= 10min, z5+ >= 5min, z6+ >= 2min, z7 >= 1min. Cumulative thresholds per Seiler/Foster \u2014 higher zones need less time to qualify as hard",
+    "seiler_tid_7d": {
+      "z1_seconds": 11634,
+      "z2_seconds": 567,
+      "z3_seconds": 1570,
+      "z1_pct": 84.5,
+      "z2_pct": 4.1,
+      "z3_pct": 11.4,
+      "polarization_index": 2.37,
+      "classification": "Polarized"
+    },
+    "seiler_tid_7d_primary": {
+      "z1_seconds": 4929,
+      "z2_seconds": 507,
+      "z3_seconds": 1335,
+      "z1_pct": 72.8,
+      "z2_pct": 7.5,
+      "z3_pct": 19.7,
+      "polarization_index": 2.28,
+      "classification": "Polarized",
+      "sport": "run"
+    },
+    "seiler_tid_28d": {
+      "z1_seconds": 64676,
+      "z2_seconds": 4459,
+      "z3_seconds": 5467,
+      "z1_pct": 86.7,
+      "z2_pct": 6.0,
+      "z3_pct": 7.3,
+      "polarization_index": 2.03,
+      "classification": "Polarized"
+    },
+    "seiler_tid_28d_primary": {
+      "z1_seconds": 20821,
+      "z2_seconds": 1493,
+      "z3_seconds": 3002,
+      "z1_pct": 82.2,
+      "z2_pct": 5.9,
+      "z3_pct": 11.9,
+      "polarization_index": 2.22,
+      "classification": "Polarized",
+      "sport": "run"
+    },
+    "capability": {
+      "durability": {
+        "mean_decoupling_7d": null,
+        "mean_decoupling_28d": null,
+        "high_drift_count_7d": 0,
+        "high_drift_count_28d": 0,
+        "qualifying_sessions_7d": 0,
+        "qualifying_sessions_28d": 0,
+        "trend": null,
+        "note": "Steady-state power sessions only (VI <= 1.05, VI > 0, >= 90min, power data). Negative decoupling = strong durability. Trend compares 7d vs 28d mean (+/-1% = stable)."
+      },
+      "efficiency_factor": {
+        "mean_ef_7d": null,
+        "mean_ef_28d": null,
+        "qualifying_sessions_7d": 0,
+        "qualifying_sessions_28d": 0,
+        "trend": null,
+        "note": "Steady-state cycling sessions only (VI <= 1.05, VI > 0, >= 20min, power+HR data). Rising EF = improving aerobic efficiency. Compare like-for-like sessions only \u2014 EF varies with intensity. Trend compares 7d vs 28d mean (+/-0.03 = stable)."
+      },
+      "tid_comparison": {
+        "classification_7d": "Polarized",
+        "classification_28d": "Polarized",
+        "pi_7d": 2.37,
+        "pi_28d": 2.03,
+        "pi_delta": 0.34,
+        "drift": "consistent",
+        "note": "Compares 7d vs 28d Seiler TID to detect distribution shifts. pi_delta positive = more polarized acutely."
+      }
+    },
+    "consistency_index": null,
+    "consistency_details": {
+      "planned_days": 0,
+      "completed_days": 2,
+      "matched_days": 0,
+      "note": "No planned workouts in period"
+    },
+    "phase_detected": "Build",
+    "phase_triggers": [
+      "ACWR 1.01 in 0.8-1.3",
+      "Hard days 2/week >= 2"
+    ],
+    "seasonal_context": "Peak Race Season",
+    "benchmark_indoor": {
+      "current_ftp": 236,
+      "ftp_8_weeks_ago": null,
+      "benchmark_index": null,
+      "benchmark_percentage": null,
+      "seasonal_expected": null
+    },
+    "benchmark_outdoor": {
+      "current_ftp": 236,
+      "ftp_8_weeks_ago": null,
+      "benchmark_index": null,
+      "benchmark_percentage": null,
+      "seasonal_expected": null
+    },
+    "eftp": 228.0,
+    "w_prime": 19065,
+    "w_prime_kj": 19.1,
+    "p_max": 704,
+    "power_model_source": "wellness.sportInfo",
+    "vo2max": 44.0,
+    "calculation_timestamp": "2026-08-03T14:21:40.297117+10:00",
+    "data_quality": {
+      "hrv_data_points": 7,
+      "rhr_data_points": 7,
+      "activities_7d": 5,
+      "activities_28d": 23,
+      "planned_workouts_7d": 0,
+      "ftp_history_days": {
+        "indoor": 0,
+        "outdoor": 0
+      }
+    }
+  },
+  "recent_activities": [
+    {
+      "id": "activity_1",
+      "date": "2026-08-03T10:01:01",
+      "type": "Run",
+      "name": "Training Session",
+      "duration_hours": 0.63,
+      "distance_km": 6.01,
+      "tss": 35,
+      "intensity_factor": 85.253456,
+      "avg_power": 328,
+      "normalized_power": 370,
+      "avg_hr": 136,
+      "max_hr": 167,
+      "avg_cadence": 76.23463,
+      "avg_speed": 9.5,
+      "max_speed": 24.7,
+      "avg_pace": null,
+      "avg_temp": 20.940712,
+      "weather": null,
+      "humidity": null,
+      "wind_speed": null,
+      "work_kj": 746.5,
+      "calories": 483,
+      "carbs_used": null,
+      "carbs_ingested": null,
+      "variability_index": 1.1280488,
+      "decoupling": 25.752298,
+      "efficiency_factor": 2.7205882,
+      "elevation_m": 8.554726,
+      "feel": 2,
+      "rpe": 6,
+      "zone_distribution": {
+        "hr_zones": {
+          "z1_time": 808,
+          "z2_time": 813,
+          "z3_time": 408,
+          "z4_time": 153,
+          "z5_time": 69,
+          "z6_time": 24,
+          "z7_time": 0
+        },
+        "power_zones": {
+          "z1_time": 631,
+          "z2_time": 808,
+          "z3_time": 292,
+          "z4_time": 429,
+          "z5_time": 14,
+          "z6_time": 39,
+          "z7_time": 62
+        }
+      }
+    },
+    {
+      "id": "activity_2",
+      "date": "2026-08-02T13:15:26",
+      "type": "VirtualRide",
+      "name": "MyWhoosh - 20sec + Endurance #1",
+      "duration_hours": 0.92,
+      "distance_km": 0.0,
+      "tss": 33,
+      "intensity_factor": 59.74576,
+      "avg_power": 132,
+      "normalized_power": 141,
+      "avg_hr": 120,
+      "max_hr": 144,
+      "avg_cadence": 93.58381,
+      "avg_speed": null,
+      "max_speed": null,
+      "avg_pace": null,
+      "avg_temp": 23.896177,
+      "weather": null,
+      "humidity": null,
+      "wind_speed": null,
+      "work_kj": 437.3,
+      "calories": 523,
+      "carbs_used": 131,
+      "carbs_ingested": null,
+      "variability_index": 1.0681819,
+      "decoupling": 12.653211,
+      "efficiency_factor": 1.175,
+      "elevation_m": null,
+      "feel": 3,
+      "rpe": 2,
+      "zone_distribution": {
+        "hr_zones": {
+          "z1_time": 1964,
+          "z2_time": 1057,
+          "z3_time": 210,
+          "z4_time": 92,
+          "z5_time": 0,
+          "z6_time": 0,
+          "z7_time": 0
+        },
+        "power_zones": {
+          "z1_time": 2358,
+          "z2_time": 822,
+          "z3_time": 29,
+          "z4_time": 20,
+          "z5_time": 31,
+          "z6_time": 63,
+          "z7_time": 0
+        }
+      }
+    },
+    {
+      "id": "activity_3",
+      "date": "2026-07-31T08:17:00",
+      "type": "Run",
+      "name": "Training Session",
+      "duration_hours": 0.56,
+      "distance_km": 5.73,
+      "tss": 47,
+      "intensity_factor": 86.17512,
+      "avg_power": 370,
+      "normalized_power": 374,
+      "avg_hr": 154,
+      "max_hr": 175,
+      "avg_cadence": 81.851295,
+      "avg_speed": 10.3,
+      "max_speed": 14.7,
+      "avg_pace": null,
+      "avg_temp": 17.492516,
+      "weather": null,
+      "humidity": null,
+      "wind_speed": null,
+      "work_kj": 741.5,
+      "calories": 492,
+      "carbs_used": null,
+      "carbs_ingested": null,
+      "variability_index": 1.0108109,
+      "decoupling": 2.124444,
+      "efficiency_factor": 2.4285715,
+      "elevation_m": 143.07407,
+      "feel": 2,
+      "rpe": 4,
+      "zone_distribution": {
+        "hr_zones": {
+          "z1_time": 32,
+          "z2_time": 151,
+          "z3_time": 889,
+          "z4_time": 391,
+          "z5_time": 319,
+          "z6_time": 143,
+          "z7_time": 79
+        },
+        "power_zones": {
+          "z1_time": 24,
+          "z2_time": 1732,
+          "z3_time": 85,
+          "z4_time": 76,
+          "z5_time": 40,
+          "z6_time": 47,
+          "z7_time": 0
+        }
+      }
+    },
+    {
+      "id": "activity_4",
+      "date": "2026-07-30T08:48:35",
+      "type": "VirtualRide",
+      "name": "MyWhoosh - Recovery",
+      "duration_hours": 1.02,
+      "distance_km": 0.0,
+      "tss": 52,
+      "intensity_factor": 71.61017,
+      "avg_power": 139,
+      "normalized_power": 169,
+      "avg_hr": 121,
+      "max_hr": 164,
+      "avg_cadence": 88.013054,
+      "avg_speed": null,
+      "max_speed": null,
+      "avg_pace": null,
+      "avg_temp": 14.20805,
+      "weather": null,
+      "humidity": null,
+      "wind_speed": null,
+      "work_kj": 509.4,
+      "calories": 605,
+      "carbs_used": 154,
+      "carbs_ingested": null,
+      "variability_index": 1.2158273,
+      "decoupling": -2.2002647,
+      "efficiency_factor": 1.3966942,
+      "elevation_m": null,
+      "feel": 2,
+      "rpe": 3,
+      "zone_distribution": {
+        "hr_zones": {
+          "z1_time": 1430,
+          "z2_time": 1952,
+          "z3_time": 56,
+          "z4_time": 140,
+          "z5_time": 25,
+          "z6_time": 43,
+          "z7_time": 31
+        },
+        "power_zones": {
+          "z1_time": 1430,
+          "z2_time": 2095,
+          "z3_time": 31,
+          "z4_time": 6,
+          "z5_time": 13,
+          "z6_time": 74,
+          "z7_time": 28
+        }
+      }
+    },
+    {
+      "id": "activity_5",
+      "date": "2026-07-29T08:18:09",
+      "type": "Run",
+      "name": "Training Session",
+      "duration_hours": 0.69,
+      "distance_km": 6.21,
+      "tss": 56,
+      "intensity_factor": 84.331795,
+      "avg_power": 352,
+      "normalized_power": 366,
+      "avg_hr": 152,
+      "max_hr": 171,
+      "avg_cadence": 81.2507,
+      "avg_speed": 9.0,
+      "max_speed": 12.0,
+      "avg_pace": null,
+      "avg_temp": 20.520063,
+      "weather": null,
+      "humidity": null,
+      "wind_speed": null,
+      "work_kj": 875.6,
+      "calories": 581,
+      "carbs_used": null,
+      "carbs_ingested": null,
+      "variability_index": 1.0397727,
+      "decoupling": 6.7366834,
+      "efficiency_factor": 2.4078948,
+      "elevation_m": 68.491196,
+      "feel": 2,
+      "rpe": 1,
+      "zone_distribution": {
+        "hr_zones": {
+          "z1_time": 58,
+          "z2_time": 340,
+          "z3_time": 837,
+          "z4_time": 903,
+          "z5_time": 221,
+          "z6_time": 114,
+          "z7_time": 19
+        },
+        "power_zones": {
+          "z1_time": 871,
+          "z2_time": 863,
+          "z3_time": 130,
+          "z4_time": 356,
+          "z5_time": 246,
+          "z6_time": 26,
+          "z7_time": 0
+        }
+      }
+    }
+  ],
+  "wellness_data": [
+    {
+      "date": "2026-07-28",
+      "weight_kg": 93.069,
+      "resting_hr": 52,
+      "hrv_rmssd": 41.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 6.57,
+      "sleep_quality": 3,
+      "sleep_score": 76.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
+    },
+    {
+      "date": "2026-07-29",
+      "weight_kg": 92.73,
+      "resting_hr": 53,
+      "hrv_rmssd": 38.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 7.87,
+      "sleep_quality": 3,
+      "sleep_score": 78.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": 44.0
+    },
+    {
+      "date": "2026-07-30",
+      "weight_kg": 92.26,
+      "resting_hr": 54,
+      "hrv_rmssd": 35.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 6.15,
+      "sleep_quality": 4,
+      "sleep_score": 55.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
+    },
+    {
+      "date": "2026-07-31",
+      "weight_kg": 91.65,
+      "resting_hr": 53,
+      "hrv_rmssd": 39.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 7.52,
+      "sleep_quality": 2,
+      "sleep_score": 83.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": 44.0
+    },
+    {
+      "date": "2026-08-01",
+      "weight_kg": 93.05,
+      "resting_hr": 54,
+      "hrv_rmssd": 36.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 7.13,
+      "sleep_quality": 2,
+      "sleep_score": 81.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
+    },
+    {
+      "date": "2026-08-02",
+      "weight_kg": 92.639,
+      "resting_hr": 54,
+      "hrv_rmssd": 33.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 8.25,
+      "sleep_quality": 2,
+      "sleep_score": 82.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
+    },
+    {
+      "date": "2026-08-03",
+      "weight_kg": 92.18,
+      "resting_hr": 54,
+      "hrv_rmssd": 36.0,
+      "hrv_sdnn": null,
+      "sleep_hours": 6.36,
+      "sleep_quality": 3,
+      "sleep_score": 74.0,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": 44.0
+    }
+  ],
+  "planned_workouts": [],
+  "weekly_summary": {
+    "total_training_hours": 3.82,
+    "total_tss": 223,
+    "activities_count": 5,
+    "avg_hrv": 36.9,
+    "avg_resting_hr": 53.4
+  },
+  "race_calendar": {
+    "next_race": null,
+    "all_races": [],
+    "taper_alert": {
+      "active": false
+    },
+    "race_week": {
+      "active": false
+    }
+  }
+}

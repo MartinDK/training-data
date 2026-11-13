@@ -13,20 +13,20 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: |
           pip install requests
-      
+
       - name: Verify sync.py exists
         run: |
           if [ ! -f sync.py ]; then
@@ -37,7 +37,7 @@ jobs:
           fi
           echo "✅ sync.py found"
           echo "File size: $(wc -c < sync.py) bytes"
-      
+
       - name: Verify secrets are set
         run: |
           if [ -z "${{ secrets.ATHLETE_ID }}" ]; then
@@ -49,7 +49,7 @@ jobs:
             exit 1
           fi
           echo "✅ All secrets configured"
-      
+
       - name: Run sync
         env:
           ATHLETE_ID: ${{ secrets.ATHLETE_ID }}
@@ -73,7 +73,7 @@ jobs:
               echo "❌ Sync script failed with exit code $?"
               exit 1
             }
-      
+
       - name: Verify latest.json was created/updated
         run: |
           if [ -f latest.json ]; then
@@ -83,24 +83,21 @@ jobs:
           else
             echo "⚠️ latest.json not found - might be no changes detected"
           fi
-      
-      - name: Archive latest.json with date
+
+      - name: Archive latest.json with timestamp
         if: success()
         run: |
-          # Create archive directory if it doesn't exist
           mkdir -p archive
-          
-          # Get date in YYYYMMDD format (e.g., 20261114) and 30-day cutoff
-          TIMESTAMP=$(date -u +"%Y%m%d")
+
+          # Archive name: YYYYMMDD_HHMMSS (e.g. 20260302_024353); cutoff is date-only
+          TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
           CUTOFF=$(date -u -d "30 days ago" +"%Y%m%d")
-          
-          # Copy latest.json to archive if it exists
+
           if [ -f latest.json ]; then
             cp latest.json "archive/${TIMESTAMP}.json"
             echo "✅ Archived to archive/${TIMESTAMP}.json"
-            
-            # Delete archive files whose YYYYMMDD prefix is older than 30 days
-            # Handles both YYYYMMDD.json and legacy YYYYMMDD_HHMMSS.json files
+
+            # Delete archives whose YYYYMMDD prefix is older than 30 days
             for file in archive/*.json; do
               [ -e "$file" ] || continue
               filename=$(basename "$file" .json)
@@ -110,11 +107,10 @@ jobs:
                 echo "🗑️ Deleted old archive: $file"
               fi
             done
-            
-            # Configure git
+
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
-            
+
             # Stage ALL generated files and archive deletions
             git add --all archive/
             if [ -f ftp_history.json ]; then
@@ -129,13 +125,11 @@ jobs:
               git add latest.json
               echo "✅ Staged latest.json"
             fi
-            
-            # Now pull - autostash will safely stash staged changes
-            git pull --rebase --autostash origin main
-            
-            # Only commit if there are changes
+
+            # Commit first, then rebase, so deletions can't be lost in a stash
             if ! git diff --staged --quiet; then
-              git commit -m "Archive training data (${TIMESTAMP}), prune old archives - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              git commit -m "Archive training data (${TIMESTAMP}), prune old archives"
+              git pull --rebase origin main
               git push
               echo "✅ Archive, prune, and commit pushed successfully"
             else
@@ -144,16 +138,19 @@ jobs:
           else
             echo "⚠️ Skipping archive - no latest.json to archive"
           fi
-      
+
       - name: Update README with last sync time
         if: success()
         run: |
           SYNC_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
           if [ -f README.md ]; then
             echo "Current README content (first 5 lines):"
             head -5 README.md
-            
+
             if grep -q "Last successful sync:" README.md; then
               echo "Found existing timestamp line, updating..."
               sed -i "s/\*\*Last successful sync:\*\*.*/\*\*Last successful sync:\*\* ${SYNC_TIME}/" README.md
@@ -161,25 +158,26 @@ jobs:
               echo "No timestamp found, adding new line..."
               sed -i "/badge.svg)/a\\\n\*\*Last successful sync:\*\* ${SYNC_TIME}\n" README.md
             fi
-            
+
             echo "Updated README content (first 5 lines):"
             head -5 README.md
-            
+
             if ! git diff --quiet README.md; then
               git add README.md
               git commit -m "Update last sync timestamp: ${SYNC_TIME}"
+              git pull --rebase --autostash origin main
               git push
               echo "✅ README updated with sync time: ${SYNC_TIME}"
             else
               echo "⚠️ No changes detected in README"
             fi
           fi
-      
+
       - name: Show result
         run: |
           echo "✅ Sync completed successfully!"
           echo "📊 View data: https://raw.githubusercontent.com/${{ github.repository }}/main/latest.json"
-      
+
       - name: Notify on failure
         if: failure()
         run: |

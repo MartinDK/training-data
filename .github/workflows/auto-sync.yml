@@ -1,10 +1,12 @@
+Here is your complete updated GitHub Actions workflow file. It updates the archive filename format to use just the date (`YYYYMMDD`, e.g., `20260228.json`), retains the daily 11:00 AM UTC schedule, and keeps the 30-day archive pruning.
+
+```yaml
 name: Auto-Sync Intervals.icu Data
 
 on:
   schedule:
-    # Run every 1 hour (good balance of frequency and API limits)
-    - cron: '0 1 * * *'
-    # For every 15 minutes, use: '*/15 * * * *'
+    # Run once a day at 11:00 UTC
+    - cron: '0 11 * * *'
   workflow_dispatch:  # Allow manual trigger
 
 permissions:
@@ -85,27 +87,30 @@ jobs:
             echo "⚠️ latest.json not found - might be no changes detected"
           fi
       
-      - name: Archive latest.json with timestamp
+      - name: Archive latest.json with date
         if: success()
         run: |
           # Create archive directory if it doesn't exist
           mkdir -p archive
           
-          # Get timestamp
-          TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
+          # Get timestamp in YYYYMMDD format (e.g., 20260228)
+          TIMESTAMP=$(date -u +"%Y%m%d")
           
           # Copy latest.json to archive if it exists
           if [ -f latest.json ]; then
             cp latest.json "archive/${TIMESTAMP}.json"
             echo "✅ Archived to archive/${TIMESTAMP}.json"
             
+            # Prune archive files older than 30 days
+            find archive/ -type f -name "*.json" -mtime +30 -delete
+            echo "🧹 Pruned archive files older than 30 days"
+            
             # Configure git
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             
-            # Stage ALL generated files BEFORE pulling to prevent
-            # "untracked working tree files would be overwritten" errors
-            git add archive/
+            # Stage ALL generated files and archive deletions
+            git add --all archive/
             if [ -f ftp_history.json ]; then
               git add ftp_history.json
               echo "✅ Staged ftp_history.json"
@@ -124,11 +129,11 @@ jobs:
             
             # Only commit if there are changes
             if ! git diff --staged --quiet; then
-              git commit -m "Archive training data + FTP history - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              git commit -m "Archive training data (${TIMESTAMP}), prune old archives - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
               git push
-              echo "✅ Archive and FTP history committed and pushed"
+              echo "✅ Archive, prune, and commit pushed successfully"
             else
-              echo "⏭️  No new archive to commit"
+              echo "⏭️  No new archive changes to commit"
             fi
           else
             echo "⚠️ Skipping archive - no latest.json to archive"
@@ -177,3 +182,5 @@ jobs:
           echo "  - Check ATHLETE_ID and INTERVALS_KEY secrets"
           echo "  - Verify Intervals.icu API is accessible"
           echo "  - Check GitHub token permissions"
+
+```

@@ -84,14 +84,14 @@ jobs:
             echo "⚠️ latest.json not found - might be no changes detected"
           fi
       
-      - name: Archive latest.json with date
+      - name: Archive latest.json with timestamp
         if: success()
         run: |
           # Create archive directory if it doesn't exist
           mkdir -p archive
           
-          # Get timestamp in YYYYMMDD format (e.g., 20260228)
-          TIMESTAMP=$(date -u +"%Y%m%d")
+          # Get timestamp in YYYYMMDD_HHMMSS format (e.g., 20260228_042118)
+          TIMESTAMP=$(date -u +"%Y%m%d_%H%M%S")
           
           # Copy latest.json to archive if it exists
           if [ -f latest.json ]; then
@@ -126,7 +126,7 @@ jobs:
             
             # Only commit if there are changes
             if ! git diff --staged --quiet; then
-              git commit -m "Archive training data (${TIMESTAMP}), prune old archives - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              git commit -m "Archive training data, prune old archives - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
               git push
               echo "✅ Archive, prune, and commit pushed successfully"
             else
